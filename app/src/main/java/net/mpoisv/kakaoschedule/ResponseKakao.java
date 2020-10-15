@@ -19,7 +19,7 @@ public class ResponseKakao {
             return;
         }
 
-        if(msg.startsWith(".s")) {
+        if(msg.startsWith(".s ") || msg.equals(".s")) {
             Calendar date = getDay(msg);
 
             if(date == null) {
@@ -46,7 +46,7 @@ public class ResponseKakao {
 
             replier.reply(getTimeString(date) + "\n" + buf.toString());
         }
-        else if(msg.startsWith(".add")) {
+        else if(msg.startsWith(".add ") || msg.equals(".add")) {
             Calendar date = getDay(msg);
 
             if(date == null) {
@@ -98,7 +98,7 @@ public class ResponseKakao {
             }else
                 replier.reply("ERROR:\n명령어를 정확히 입력하세요.");
 
-        }else if(msg.startsWith(".rm")) {
+        }else if(msg.startsWith(".rm ") || msg.equals(".rm")) {
             Calendar date = getDay(msg);
 
             if(date == null) {
@@ -157,9 +157,9 @@ public class ResponseKakao {
     }
 
     private static boolean isBotCommand(String msg) {
-        return (msg.startsWith(".s") ||
-                msg.startsWith(".add") ||
-                msg.startsWith(".rm"));
+        return (msg.startsWith(".s ") || msg.equals(".s") ||
+                msg.startsWith(".add ") || msg.equals(".add") ||
+                msg.startsWith(".rm ") || msg.equals(".rm"));
     }
 
     private static int getSubjectCode(String msg) {
