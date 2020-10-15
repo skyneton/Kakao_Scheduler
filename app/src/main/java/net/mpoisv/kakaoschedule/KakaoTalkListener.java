@@ -42,27 +42,29 @@ public class KakaoTalkListener extends NotificationListenerService {
     public void onNotificationPosted(StatusBarNotification sbn) {
         super.onNotificationPosted(sbn);
 
-        if(KakaoInfo.getKakaoPackageName().contains(sbn.getPackageName())) {
-            Bundle extras = sbn.getNotification().extras;
-            if(extras.getString(Notification.EXTRA_TITLE) == null ||
-                    extras.getString(Notification.EXTRA_TEXT) == null) return;
+        try {
+            if (KakaoInfo.getKakaoPackageName().contains(sbn.getPackageName())) {
+                Bundle extras = sbn.getNotification().extras;
+                if (extras.getString(Notification.EXTRA_TITLE) == null ||
+                        extras.getString(Notification.EXTRA_TEXT) == null) return;
 
-            KakaoData kakaoData = new KakaoData();
+                KakaoData kakaoData = new KakaoData();
 
-            kakaoData.sender = extras.getString(Notification.EXTRA_TITLE);
-            kakaoData.message = extras.getString(Notification.EXTRA_TEXT);
-            kakaoData.room = extras.getString(Notification.EXTRA_SUB_TEXT);
+                kakaoData.sender = extras.getString(Notification.EXTRA_TITLE);
+                kakaoData.message = extras.getString(Notification.EXTRA_TEXT);
+                kakaoData.room = extras.getString(Notification.EXTRA_SUB_TEXT);
 
-            if(sbn.getNotification().actions == null) return;
+                if (sbn.getNotification().actions == null) return;
 
-            for(Notification.Action action : sbn.getNotification().actions) {
-                if(action.getRemoteInputs() != null && action.getRemoteInputs().length > 0 && (action.title.toString().toLowerCase().contains("reply") || action.title.toString().toLowerCase().contains("답장"))) {
-                    ResponseKakao.response(kakaoData.room, kakaoData.message, kakaoData.sender, kakaoData.room != null, new Replier(action, getApplicationContext()));
+                for (Notification.Action action : sbn.getNotification().actions) {
+                    if (action.getRemoteInputs() != null && action.getRemoteInputs().length > 0 && (action.title.toString().toLowerCase().contains("reply") || action.title.toString().toLowerCase().contains("답장"))) {
+                        ResponseKakao.response(kakaoData.room, kakaoData.message, kakaoData.sender, kakaoData.room != null, new Replier(action, getApplicationContext()));
 
-                    break;
+                        break;
+                    }
                 }
             }
-        }
+        }catch(Exception e) { }
     }
 
     /*void startForegroundService() {
